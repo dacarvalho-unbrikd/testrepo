@@ -1,40 +1,27 @@
-apiVersion: margo.org/v1
+apiVersion: margo.org/v1-alpha1
 kind: ApplicationDescription
 metadata:
-  id: "com.example.anomalydetector"
-  name: "Factory Anomaly Detector"
-  description: "Machine learning workload for detecting vibration anomalies on the factory floor."
-catalog:
-  application:
-    version: "1.2.0"
+  id: com-example-anomalydetector        # dashes, no periods
+  name: Factory Anomaly Detector
+  description: ML workload for detecting vibration anomalies.
+  version: "1.2.0"                         # under metadata
+  catalog:
+    application:
+      tagline: Prevent downtime before it happens
+      tags: ["iiot", "machine-learning"]
     organization:
-      name: "IndustrialEdge Corp"
-  tagline: "Prevent downtime before it happens"
-  tags: 
-    - "iiot"
-    - "machine-learning"
-    - "maintenance"
-  icon: "icon.jpeg"
-  site: "https://example.com/anomaly-detector"
-author:
-  name: "Jane Doe"
-  email: "jane.doe@example.com"
+      - name: IndustrialEdge Corp          # array of orgs
 deploymentProfiles:
-  - type: "docker-compose"
-    name: "Standalone Edge Device Profile"
-    description: "Deploys via Docker Compose for standalone devices without Kubernetes."
+  - type: compose                          # not docker-compose
+    id: edge-compose                        # id required
     components:
-      - name: "detector-compose"
-        reference: "registry.example.com/components/anomaly-detector:1.2.0"
-  - type: "kubernetes"
-    name: "Kubernetes Cluster Profile"
-    description: "Deploys via Helm for high-availability edge clusters."
+      - name: detector-compose
+        properties:
+          packageLocation: registry.example.com/components/anomaly-detector:1.2.0
+  - type: helm                              # not kubernetes
+    id: cluster-helm
     components:
-      - name: "detector-helm"
-        reference: "registry.example.com/charts/anomaly-detector:1.2.0"
-parameters:
-  - name: "SENSOR_POLL_INTERVAL"
-    description: "How often to poll the vibration sensors (in seconds)."
-    type: "integer"
-    default: 5
-    required: true
+      - name: detector-helm
+        properties:
+          repository: registry.example.com/charts/anomaly-detector
+          revision: "1.2.0"
