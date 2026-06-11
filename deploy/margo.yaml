@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: ApplicationDescription
+metadata:
+  id: anomaly-detector-01
+  name: "Factory Anomaly Detector"
+  version: "1.2.0"
+  description: "Machine learning workload for detecting vibration anomalies on the factory floor."
+  catalog:
+    tagline: "Prevent downtime before it happens"
+    tags: ["iiot", "machine-learning", "maintenance"]
+    icon: "icon.jpeg"
+    site: "https://example.com/anomaly-detector"
+  author:
+    name: "Jane Doe"
+    email: "jane.doe@example.com"
+  organization:
+    name: "IndustrialEdge Corp"
+
+# Deployment profiles define how the app runs on the edge device
+deploymentProfiles:
+  - type: compose
+    name: "Standalone Edge Device Profile"
+    description: "Deploys via Docker Compose for standalone devices without Kubernetes."
+    components:
+      - name: "detector-compose"
+        reference: "registry.example.com/components/anomaly-detector:1.2.0"
+        
+  - type: helm
+    name: "Kubernetes Cluster Profile"
+    description: "Deploys via Helm for high-availability edge clusters."
+    components:
+      - name: "detector-helm"
+        reference: "registry.example.com/charts/anomaly-detector:1.2.0"
+
+# Optional: Configurable parameters the OT user can change via the WFM UI
+parameters:
+  - name: SENSOR_POLL_INTERVAL
+    description: "How often to poll the vibration sensors (in seconds)."
+    type: integer
+    default: 5
+    required: true
