@@ -1,42 +1,40 @@
-apiVersion: margo.org/v1 # Update this if your specific tool requires a different Margo namespace (e.g., v1alpha1)
+apiVersion: margo.org/v1
 kind: ApplicationDescription
 metadata:
-  id: com.example.anomalydetector # FIXED: Reverse-DNS identifier
+  id: "com.example.anomalydetector"
   name: "Factory Anomaly Detector"
   description: "Machine learning workload for detecting vibration anomalies on the factory floor."
-  
 catalog:
   application:
-    version: "1.2.0" # FIXED: Moved under catalog.application
+    version: "1.2.0"
     organization:
-      name: "IndustrialEdge Corp" # FIXED: Moved under catalog.application
+      name: "IndustrialEdge Corp"
   tagline: "Prevent downtime before it happens"
-  tags: ["iiot", "machine-learning", "maintenance"]
+  tags: 
+    - "iiot"
+    - "machine-learning"
+    - "maintenance"
   icon: "icon.jpeg"
   site: "https://example.com/anomaly-detector"
-
 author:
   name: "Jane Doe"
   email: "jane.doe@example.com"
-
 deploymentProfiles:
-  - type: docker-compose # FIXED: Using exact runtime string instead of "compose"
+  - type: "docker-compose"
     name: "Standalone Edge Device Profile"
     description: "Deploys via Docker Compose for standalone devices without Kubernetes."
     components:
       - name: "detector-compose"
         reference: "registry.example.com/components/anomaly-detector:1.2.0"
-        
-  - type: kubernetes # FIXED: Using exact runtime string instead of "helm"
+  - type: "kubernetes"
     name: "Kubernetes Cluster Profile"
     description: "Deploys via Helm for high-availability edge clusters."
     components:
       - name: "detector-helm"
         reference: "registry.example.com/charts/anomaly-detector:1.2.0"
-
 parameters:
-  - name: SENSOR_POLL_INTERVAL
+  - name: "SENSOR_POLL_INTERVAL"
     description: "How often to poll the vibration sensors (in seconds)."
-    type: integer
+    type: "integer"
     default: 5
     required: true
